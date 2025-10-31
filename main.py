@@ -24,9 +24,11 @@ class SeleniumParser:
         self._chrome_options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.85 Safari/537.36")
 
     def __enter__(self):
+        # без докера
         service = Service(executable_path=ChromeDriverManager().install())
         self._driver = webdriver.Chrome(service=service, options=self._chrome_options)
-        # self._driver = webdriver.Remote(command_executor='http://selenium:4444/wd/hub', options=self._chrome_options)  # использовать в докере
+        # с докером
+        # self._driver = webdriver.Remote(command_executor='http://selenium:4444/wd/hub', options=self._chrome_options)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -190,10 +192,10 @@ class SeleniumParser:
         return 'https:' + item.find('img').get('src')
 
 
-with SeleniumParser() as parser:
-    name = input('Введите название: ')
-    print(parser.parse_wildberries(name))
-    print(parser.parse_yandex_market(name))
-    print(parser.parse_ozon(name))
-    print(parser.parse_aliexpress(name))
-    print(parser.parse_yandex_images(name))
+# with SeleniumParser() as parser:
+#     name = input('Введите название: ')
+#     print(parser.parse_wildberries(name))
+#     print(parser.parse_yandex_market(name))
+#     print(parser.parse_ozon(name))
+#     print(parser.parse_aliexpress(name))
+#     print(parser.parse_yandex_images(name))
