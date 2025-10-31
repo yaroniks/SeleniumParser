@@ -25,8 +25,8 @@ class SeleniumParser:
 
     def __enter__(self):
         service = Service(executable_path=ChromeDriverManager().install())
-        # self._driver = webdriver.Remote(command_executor='http://selenium:4444/wd/hub', options=self._chrome_options)
         self._driver = webdriver.Chrome(service=service, options=self._chrome_options)
+        # self._driver = webdriver.Remote(command_executor='http://selenium:4444/wd/hub', options=self._chrome_options)  # использовать в докере
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -36,6 +36,14 @@ class SeleniumParser:
             pass
 
     def parse_wildberries(self, product_name: str) -> list[dict]:
+        """
+        :return {
+            'name': str,
+            'cost' int,
+            'star': float,
+            'image': str,
+        }
+        """
         wait = WebDriverWait(self._driver, 5, poll_frequency=1)
         self._driver.get(f'https://www.wildberries.ru/catalog/0/search.aspx?search={product_name}')
         wait.until(ec.visibility_of_element_located((By.XPATH, "//div[@class='product-card-list']")))
@@ -62,6 +70,14 @@ class SeleniumParser:
         return products
 
     def parse_yandex_market(self, product_name: str) -> list[dict]:
+        """
+        :return {
+            'name': str,
+            'cost' int,
+            'star': float,
+            'image': str,
+        }
+        """
         self._driver.implicitly_wait(1)
         self._driver.get(f'https://market.yandex.ru/search?text={product_name}')
 
@@ -87,6 +103,14 @@ class SeleniumParser:
         return products
 
     def parse_ozon(self, product_name: str) -> list[dict]:
+        """
+        :return {
+            'name': str,
+            'cost' int,
+            'star': float,
+            'image': str,
+        }
+        """
         self._driver.implicitly_wait(1)
         self._driver.get(f'https://www.ozon.ru/search/?text={product_name}')
 
@@ -112,6 +136,14 @@ class SeleniumParser:
         return products
 
     def parse_aliexpress(self, product_name: str) -> list[dict]:
+        """
+        :return {
+            'name': str,
+            'cost' int,
+            'star': float,
+            'image': str,
+        }
+        """
         self._driver.implicitly_wait(1)
         self._driver.get(f'https://aliexpress.ru/wholesale?SearchText={product_name}')
 
@@ -158,10 +190,10 @@ class SeleniumParser:
         return 'https:' + item.find('img').get('src')
 
 
-# with SeleniumParser() as parser:
-#     name = input('Введите название: ')
-#     print(parser.parse_wildberries(name))
-#     print(parser.parse_yandex_market(name))
-#     print(parser.parse_ozon(name))
-#     print(parser.parse_aliexpress(name))
-#     print(parser.parse_yandex_images(name))
+with SeleniumParser() as parser:
+    name = input('Введите название: ')
+    print(parser.parse_wildberries(name))
+    print(parser.parse_yandex_market(name))
+    print(parser.parse_ozon(name))
+    print(parser.parse_aliexpress(name))
+    print(parser.parse_yandex_images(name))
