@@ -1,0 +1,27 @@
+services:
+  selenium:
+    image: selenium/standalone-chromium:latest # Для AMD64
+    # image: seleniarm/standalone-chromium:latest # Для ARM64
+    container_name: selenium-container
+    restart: unless-stopped
+    shm_size: 2g
+    ports:
+      - "4444:4444"  # Selenium WebDriver API
+      - "7900:7900"  # VNC Viewer
+    environment:
+      - SE_NODE_MAX_SESSIONS=4
+      - SE_NODE_OVERRIDE_MAX_SESSIONS=true
+      - SE_NODE_SESSION_TIMEOUT=300
+      - SE_NODE_GRID_URL=http://localhost:4444
+      - SE_NODE_DETECT_DRIVERS=false
+      - SE_VNC_NO_PASSWORD=1
+    networks:
+      - app
+
+  main:
+    build: .
+    container_name: main
+    restart: always
+    depends_on:
+      selenium:
+        condition: service_started
