@@ -1,11 +1,25 @@
 # Парсер маркетплейсов на Selenium
 
-| Сайт          | Статус работы |
-|:--------------|:-------------:|
-| Wildberries   |       ✅       |
-| Яндекс Маркет |       ✅       |
-| OZON          |       ✅       |
-| AliExpress    |       ❌       |
-| Yandex Images |       ✅       |
+Example usage:
+```python
+from SeleniumParser import SeleniumParser
 
-Последняя проверка: 31.10.2025
+with SeleniumParser() as parser:
+    products = parser.parse_wildberries('куртка')
+
+for product in products:
+    print(product["name"], product["cost"])
+
+```
+
+| Сайт          | Статус работы парсера |
+|:--------------|:---------------------:|
+| Wildberries   |           ✅           |
+| Яндекс Маркет |           ✅           |
+| OZON          |           ✅           |
+| AliExpress    |           ❌           |
+| Yandex Images |           ✅           |
+| Пятёрочка     |           ⌛           |
+| Магнит        |           ⌛           |
+
+Последняя проверка: 02.12.2025
